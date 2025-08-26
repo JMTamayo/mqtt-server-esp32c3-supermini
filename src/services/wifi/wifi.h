@@ -12,6 +12,7 @@ private:
   const char *ssid;
   const char *password;
   const char *hostname;
+  const unsigned long maxRetryTimeMs;
 
   leds::RgbLed *indicator;
 
@@ -21,11 +22,13 @@ private:
 
   const char *getHostname() const;
 
+  unsigned long getMaxRetryTimeMs() const;
+
   leds::RgbLed *getIndicator();
 
 public:
   WifiService(const char *ssid, const char *password, const char *hostname,
-              leds::RgbLed *indicator);
+              unsigned long maxRetryTimeMs, leds::RgbLed *indicator);
 
   ~WifiService();
 

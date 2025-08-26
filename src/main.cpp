@@ -17,7 +17,8 @@ void setup() {
   rgbLed = new leds::RgbLed(config::LED_BRIGHTNESS);
 
   wifi = new wifi_service::WifiService(config::WIFI_SSID, config::WIFI_PASSWORD,
-                                       config::WIFI_HOSTNAME, rgbLed);
+                                       config::WIFI_HOSTNAME,
+                                       config::WIFI_MAX_RETRY_TIME_MS, rgbLed);
   wifi->Connect();
 
   mqtt = new PicoMQTT::Server();
