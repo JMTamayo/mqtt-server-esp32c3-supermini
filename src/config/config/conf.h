@@ -19,4 +19,7 @@ extern const char *WIFI_PASSWORD; // WiFi password
 
 extern const char *WIFI_HOSTNAME; // WiFi hostname
 
+extern const unsigned long
+    WIFI_MAX_RETRY_TIME_MS; // Maximum time to retry connection to WiFi
+
 } // namespace config

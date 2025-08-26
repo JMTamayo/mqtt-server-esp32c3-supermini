@@ -10,12 +10,17 @@ const char *WifiService::getPassword() const { return this->password; }
 
 const char *WifiService::getHostname() const { return this->hostname; }
 
+unsigned long WifiService::getMaxRetryTimeMs() const {
+  return this->maxRetryTimeMs;
+}
+
 leds::RgbLed *WifiService::getIndicator() { return this->indicator; }
 
 WifiService::WifiService(const char *ssid, const char *password,
-                         const char *hostname, leds::RgbLed *indicator)
-    : ssid(ssid), password(password), hostname(hostname), indicator(indicator) {
-}
+                         const char *hostname, unsigned long maxRetryTimeMs,
+                         leds::RgbLed *indicator)
+    : ssid(ssid), password(password), hostname(hostname),
+      maxRetryTimeMs(maxRetryTimeMs), indicator(indicator) {}
 
 WifiService::~WifiService() {}
 
@@ -31,9 +36,24 @@ void WifiService::Connect() {
   logging::logger->Debug("Connecting to WiFi network: " +
                          String(this->getSsid()));
 
+  unsigned long startTimeMs = millis();
+  unsigned long retryTimeMs = 0;
+
   while (!this->IsConnected()) {
-    logging::logger->Warning("Connection status: " + String(WiFi.status()));
+    if (retryTimeMs >= this->getMaxRetryTimeMs()) {
+      logging::logger->Error(
+          "Connection to WiFi network failed. Restarting the device.");
+
+      this->indicator->Off();
+      ESP.restart();
+    }
+
+    logging::logger->Warning(
+        "WiFi connection not established. Status: " + String(WiFi.status()) +
+        ". Retry time [ms]: " + String(retryTimeMs));
+
     delay(500);
+    retryTimeMs = millis() - startTimeMs;
   }
 
   logging::logger->Debug("Connection successfully established");

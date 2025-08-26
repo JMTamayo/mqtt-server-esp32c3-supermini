@@ -42,6 +42,7 @@ A lightweight MQTT server implementation for the ESP32-C3 SuperMini development 
 - **SSID**: Your WiFi network name via `WIFI_SSID`.
 - **Password**: Your WiFi network password via `WIFI_PASSWORD`.
 - **Hostname**: Device hostname on the network via `WIFI_HOSTNAME`.
+- **Max Retry Time**: Maximum time in milliseconds to retry connection to WiFi via `WIFI_MAX_RETRY_TIME_MS`.
 
 ### Serial Configuration
 
